@@ -3,6 +3,7 @@ package com.bookmy.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
+// Classe qui représente la table livre  en base de données
 
 @Entity
 @Table(name = "livre")

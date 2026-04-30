@@ -5,6 +5,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+// Classe qui représente la table emprunt en base de données
+
 @Entity
 @Table(name = "emprunt")
 @Getter

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
+// Classe qui représente la table utilisateur en base de données
 
 @Entity
 @Table(name = "utilisateur")

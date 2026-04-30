@@ -19,8 +19,8 @@ public class LivreController {
 
     // GET - Lister tous les livres
     @GetMapping
-    public List<Livre> getAllLivres() {
-        return livreService.listerTous();
+    public ResponseEntity<List<Livre>> getAllLivres() {
+        return ResponseEntity.ok(livreService.listerTous());
     }
 
     // GET - Trouver un livre par ID
@@ -39,26 +39,26 @@ public class LivreController {
 
     // GET - Rechercher par titre exact
     @GetMapping("/titre/{titre}")
-    public List<Livre> getLivresByTitreExact(@PathVariable String titre) {
-        return livreService.chercherParTitreExact(titre);
+    public ResponseEntity<List<Livre>> getLivresByTitreExact(@PathVariable String titre) {
+        return ResponseEntity.ok(livreService.chercherParTitreExact(titre));
     }
 
     // GET - Rechercher par titre contenant (recherche partielle)
     @GetMapping("/recherche")
-    public List<Livre> getLivresByTitreContenant(@RequestParam String mot) {
-        return livreService.chercherParTitreContenant(mot);
+    public ResponseEntity<List<Livre>> getLivresByTitreContenant(@RequestParam String mot) {
+        return ResponseEntity.ok(livreService.chercherParTitreContenant(mot));
     }
 
     // GET - Rechercher par auteur
     @GetMapping("/auteur/{auteur}")
-    public List<Livre> getLivresByAuteur(@PathVariable String auteur) {
-        return livreService.chercherParAuteur(auteur);
+    public ResponseEntity<List<Livre>> getLivresByAuteur(@PathVariable String auteur) {
+        return ResponseEntity.ok(livreService.chercherParAuteur(auteur));
     }
 
     // GET - Rechercher par catégorie
     @GetMapping("/categorie/{categorie}")
-    public List<Livre> getLivresByCategorie(@PathVariable String categorie) {
-        return livreService.chercherParCategorie(categorie);
+    public ResponseEntity<List<Livre>> getLivresByCategorie(@PathVariable String categorie) {
+        return ResponseEntity.ok(livreService.chercherParCategorie(categorie));
     }
 
     // GET - Rechercher par ISBN
@@ -84,5 +84,27 @@ public class LivreController {
     public ResponseEntity<Livre> addLivre(@RequestBody Livre livre) {
         Livre nouveauLivre = livreService.ajouterLivre(livre);
         return new ResponseEntity<>(nouveauLivre, HttpStatus.CREATED);
+    }
+
+    // PUT - Modifier un livre
+    @PutMapping("/{id}")
+    public ResponseEntity<Livre> modifierLivre(@PathVariable Long id, @RequestBody Livre livre) {
+        try {
+            Livre livreModifie = livreService.modifierLivre(id, livre);
+            return ResponseEntity.ok(livreModifie);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // DELETE - Supprimer un livre
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> supprimerLivre(@PathVariable Long id) {
+        try {
+            livreService.supprimerLivre(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -131,4 +131,19 @@ public class EmpruntService {
                 .orElseThrow(() -> new RuntimeException("Membre non trouvé"));
         return empruntRepository.findByMembreIdAndStatut(membreId, StatutEmprunt.EN_COURS);
     }
+
+    
+
+    // Vérifier si un membre a des emprunts en retard
+    public boolean verifierRetardsMembre(Long membreId) {
+        // Vérifier que le membre existe
+        utilisateurRepository.findById(membreId)
+                .orElseThrow(() -> new RuntimeException("Membre non trouvé"));
+        
+        // Chercher les emprunts en retard de ce membre
+        List<Emprunt> empruntsEnRetard = empruntRepository.findByMembreIdAndStatut(membreId, StatutEmprunt.EN_RETARD);
+        
+        // Retourne true si au moins un emprunt en retard, false sinon
+        return !empruntsEnRetard.isEmpty();
+    }
 }

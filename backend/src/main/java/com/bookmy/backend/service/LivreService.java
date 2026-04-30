@@ -63,4 +63,25 @@ public class LivreService {
                 .orElseThrow(() -> new RuntimeException("Livre non trouvé"));
         return livre.getNbExemplairesDisponibles();
     }
+
+    // Modifier un livre
+    public Livre modifierLivre(Long id, Livre nouveauLivre) {
+        Livre livreExistant = livreRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Livre non trouvé"));
+        
+        livreExistant.setTitre(nouveauLivre.getTitre());
+        livreExistant.setAuteur(nouveauLivre.getAuteur());
+        livreExistant.setIsbn(nouveauLivre.getIsbn());
+        livreExistant.setCategorie(nouveauLivre.getCategorie());
+        livreExistant.setNbExemplairesTotal(nouveauLivre.getNbExemplairesTotal());
+        
+        return livreRepository.save(livreExistant);
+    }
+
+    // Supprimer un livre
+    public void supprimerLivre(Long id) {
+        Livre livre = livreRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Livre non trouvé"));
+        livreRepository.deleteById(id);
+    }
 }
