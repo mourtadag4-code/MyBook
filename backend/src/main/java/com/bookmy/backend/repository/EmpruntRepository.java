@@ -18,4 +18,5 @@ public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
     
     // Trouver les emprunts en cours d'un membre
     List<Emprunt> findByMembreIdAndStatut(Long membreId, StatutEmprunt statut);
+    long countByStatut(StatutEmprunt statut);
 }
