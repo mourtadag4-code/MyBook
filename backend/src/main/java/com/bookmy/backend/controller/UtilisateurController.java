@@ -73,6 +73,7 @@ public class UtilisateurController {
         utilisateurService.supprimerUtilisateur(id);
         return ResponseEntity.noContent().build();
     }
+<<<<<<< HEAD
     // PUT - Modifier un membre
 @PutMapping("/membres/{id}")
 public ResponseEntity<Utilisateur> modifierMembre(@PathVariable Long id, @RequestBody Utilisateur membre) {
@@ -83,4 +84,6 @@ public ResponseEntity<Utilisateur> modifierMembre(@PathVariable Long id, @Reques
         return ResponseEntity.notFound().build();
     }
 }
+=======
+>>>>>>> 7322ca6ab0fe68b237ec9ecefb5f14787a3a2492
 }

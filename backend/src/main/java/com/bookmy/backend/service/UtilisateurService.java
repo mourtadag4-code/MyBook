@@ -64,19 +64,19 @@ public class UtilisateurService {
     public void supprimerUtilisateur(Long id) {
         utilisateurRepository.deleteById(id);
     }
+
     // Modifier un membre
-public Utilisateur modifierMembre(Long id, Utilisateur membreModifie) {
-    Utilisateur membre = utilisateurRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Membre non trouvé"));
-    
-    membre.setNom(membreModifie.getNom());
-    membre.setPrenom(membreModifie.getPrenom());
-    membre.setEmail(membreModifie.getEmail());
-    membre.setTelephone(membreModifie.getTelephone());
-    membre.setAdresse(membreModifie.getAdresse());
-    membre.setDateNaissance(membreModifie.getDateNaissance());
-    // Le rôle reste MEMBRE (on ne modifie pas le rôle)
-    
-    return utilisateurRepository.save(membre);
-}
+    public Utilisateur modifierMembre(Long id, Utilisateur membreModifie) {
+        Utilisateur membre = utilisateurRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Membre non trouvé"));
+        
+        membre.setNom(membreModifie.getNom());
+        membre.setPrenom(membreModifie.getPrenom());
+        membre.setEmail(membreModifie.getEmail());
+        membre.setTelephone(membreModifie.getTelephone());
+        membre.setAdresse(membreModifie.getAdresse());
+        membre.setDateNaissance(membreModifie.getDateNaissance());
+        
+        return utilisateurRepository.save(membre);
+    }
 }

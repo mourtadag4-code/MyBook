@@ -26,31 +26,25 @@ public class EmpruntService {
     // Un membre emprunte un livre
     public Emprunt emprunterLivre(Long membreId, Long livreId) {
 
-        // Vérifier que le membre existe
         Utilisateur membre = utilisateurRepository.findById(membreId)
                 .orElseThrow(() -> new RuntimeException("Membre non trouvé"));
 
-        // Vérifier que c'est bien un membre
         if (membre.getRole() != Role.MEMBRE) {
             throw new RuntimeException("Seuls les membres peuvent emprunter des livres");
         }
 
-        // Vérifier que le livre existe
         Livre livre = livreRepository.findById(livreId)
                 .orElseThrow(() -> new RuntimeException("Livre non trouvé"));
 
-        // Vérifier qu'il reste des exemplaires
         if (livre.getNbExemplairesDisponibles() <= 0) {
             throw new RuntimeException("Plus d'exemplaires disponibles pour ce livre");
         }
 
-        // Vérifier que le membre n'a pas déjà 3 emprunts en cours
         List<Emprunt> empruntsEnCours = empruntRepository.findByMembreIdAndStatut(membreId, StatutEmprunt.EN_COURS);
         if (empruntsEnCours.size() >= 3) {
             throw new RuntimeException("Un membre ne peut pas emprunter plus de 3 livres à la fois");
         }
 
-        // Créer l'emprunt
         Emprunt emprunt = new Emprunt();
         emprunt.setMembre(membre);
         emprunt.setLivre(livre);
@@ -59,7 +53,6 @@ public class EmpruntService {
         emprunt.setStatut(StatutEmprunt.EN_COURS);
         emprunt.setPenalite(BigDecimal.ZERO);
 
-        // Diminuer le nombre d'exemplaires disponibles
         livre.setNbExemplairesDisponibles(livre.getNbExemplairesDisponibles() - 1);
         livreRepository.save(livre);
 
@@ -72,14 +65,12 @@ public class EmpruntService {
         Emprunt emprunt = empruntRepository.findById(empruntId)
                 .orElseThrow(() -> new RuntimeException("Emprunt non trouvé"));
 
-        // Vérifier que l'emprunt est bien en cours
         if (emprunt.getStatut() != StatutEmprunt.EN_COURS) {
             throw new RuntimeException("Cet emprunt est déjà terminé");
         }
 
         emprunt.setDateRetourEffective(LocalDate.now());
 
-        // Calculer le retard
         long joursRetard = ChronoUnit.DAYS.between(
                 emprunt.getDateRetourPrevue(),
                 LocalDate.now()
@@ -93,7 +84,6 @@ public class EmpruntService {
             emprunt.setPenalite(BigDecimal.ZERO);
         }
 
-        // Augmenter les exemplaires disponibles
         Livre livre = emprunt.getLivre();
         livre.setNbExemplairesDisponibles(livre.getNbExemplairesDisponibles() + 1);
         livreRepository.save(livre);
@@ -132,21 +122,17 @@ public class EmpruntService {
         return empruntRepository.findByMembreIdAndStatut(membreId, StatutEmprunt.EN_COURS);
     }
 
-    
-
     // Vérifier si un membre a des emprunts en retard
     public boolean verifierRetardsMembre(Long membreId) {
-        // Vérifier que le membre existe
         utilisateurRepository.findById(membreId)
                 .orElseThrow(() -> new RuntimeException("Membre non trouvé"));
         
-        // Chercher les emprunts en retard de ce membre
         List<Emprunt> empruntsEnRetard = empruntRepository.findByMembreIdAndStatut(membreId, StatutEmprunt.EN_RETARD);
         
-        // Retourne true si au moins un emprunt en retard, false sinon
         return !empruntsEnRetard.isEmpty();
     }
-     // Calculer la pénalité d'un emprunt (sans modifier le statut)
+
+    // Calculer la pénalité d'un emprunt (sans modifier le statut)
     public BigDecimal calculerPenalite(Emprunt emprunt) {
         if (emprunt.getDateRetourEffective() == null) {
             return BigDecimal.ZERO;
