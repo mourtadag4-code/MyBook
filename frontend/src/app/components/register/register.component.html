@@ -1,0 +1,12 @@
+<h2>Inscription</h2>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <input formControlName="nom" placeholder="Nom" required>
+    <input formControlName="prenom" placeholder="Prénom" required>
+    <input formControlName="email" type="email" placeholder="Email" required>
+    <input formControlName="telephone" placeholder="Téléphone">
+    <input formControlName="dateNaissance" type="date" placeholder="Date de naissance">
+    <input formControlName="adresse" placeholder="Adresse">
+    <input formControlName="password" type="password" placeholder="Mot de passe" required>
+    <button type="submit" [disabled]="registerForm.invalid">S'inscrire</button>
+</form>
+<p><a routerLink="/login">Déjà un compte ? Se connecter</a></p>
