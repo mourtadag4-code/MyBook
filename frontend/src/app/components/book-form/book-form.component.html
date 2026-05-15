@@ -1,0 +1,42 @@
+<div class="form-container">
+  <h1>{{ isEditMode ? '✏️ Modifier le livre' : '➕ Ajouter un livre' }}</h1>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Titre *</label>
+      <input type="text" [(ngModel)]="livre.titre" name="titre" required>
+    </div>
+
+    <div class="form-group">
+      <label>Auteur *</label>
+      <input type="text" [(ngModel)]="livre.auteur" name="auteur" required>
+    </div>
+
+    <div class="form-group">
+      <label>ISBN *</label>
+      <input type="text" [(ngModel)]="livre.isbn" name="isbn" required>
+    </div>
+
+    <div class="form-group">
+      <label>Catégorie</label>
+      <input type="text" [(ngModel)]="livre.categorie" name="categorie">
+    </div>
+
+    <div class="form-group">
+      <label>Nombre d'exemplaires *</label>
+      <input type="number" [(ngModel)]="livre.nbExemplairesTotal" name="nbExemplairesTotal" required min="1">
+    </div>
+
+    <div class="form-group">
+      <label>Exemplaires disponibles *</label>
+      <input type="number" [(ngModel)]="livre.nbExemplairesDisponibles" name="nbExemplairesDisponibles" required min="0">
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-save">💾 Enregistrer</button>
+      <button type="button" class="btn-cancel" routerLink="/livres">❌ Annuler</button>
+    </div>
+  </form>
+</div>
