@@ -1,0 +1,52 @@
+<div class="books-container">
+  <div class="header">
+    <h1>📚 Gestion des livres</h1>
+    <button class="btn-add" routerLink="/livres/ajout">+ Ajouter un livre</button>
+  </div>
+
+  <!-- Chargement -->
+  <div *ngIf="loading" class="loading">⏳ Chargement...</div>
+
+  <!-- Erreur -->
+  <div *ngIf="errorMessage" class="error">❌ {{ errorMessage }}</div>
+
+  <!-- Tableau des livres -->
+  <table *ngIf="!loading && !errorMessage && livres.length > 0">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Auteur</th>
+        <th>ISBN</th>
+        <th>Catégorie</th>
+        <th>Total</th>
+        <th>Disponibles</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+    <tbody>
+      <tr *ngFor="let livre of livres">
+        <td>{{ livre.titre }}</td>
+        <td>{{ livre.auteur }}</td>
+        <td>{{ livre.isbn }}</td>
+        <td>{{ livre.categorie }}</td>
+        <td>{{ livre.nbExemplairesTotal }}</td>
+        <td [class.low-stock]="livre.nbExemplairesDisponibles === 0">
+          {{ livre.nbExemplairesDisponibles }}
+        </td>
+        <td class="actions">
+          <button class="btn-edit" [routerLink]="['/livres/modifier', livre.id]">✏️</button>
+          <button class="btn-delete" (click)="confirmDelete(livre)">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal confirmation suppression -->
+  <div *ngIf="livreASupprimer" class="modal">
+    <div class="modal-content">
+      <p>Supprimer "{{ livreASupprimer.titre }}" ?</p>
+      <button class="btn-confirm" (click)="deleteLivre()">Oui</button>
+      <button class="btn-cancel" (click)="cancelDelete()">Non</button>
+    </div>
+  </div>
+</div>
