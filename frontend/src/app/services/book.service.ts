@@ -45,4 +45,11 @@ export class BookService {
   deleteLivre(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  searchBooks(keyword: string, category: string): Observable<Livre[]> {
+  let params = '';
+  if (keyword) params += `&keyword=${keyword}`;
+  if (category) params += `&category=${category}`;
+  return this.http.get<Livre[]>(`${this.apiUrl}/recherche?${params}`);
+}
 }

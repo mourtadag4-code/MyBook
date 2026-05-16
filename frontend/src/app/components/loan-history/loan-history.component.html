@@ -1,0 +1,67 @@
+<div class="history-container">
+  <h1>📖 Mon historique d'emprunts</h1>
+
+  <!-- Onglets -->
+  <div class="tabs">
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'current'"
+      (click)="activeTab = 'current'">
+      📚 Emprunts en cours
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'past'"
+      (click)="activeTab = 'past'">
+      ✅ Historique passé
+    </button>
+  </div>
+
+  <!-- Chargement -->
+  <div *ngIf="loading" class="loading">⏳ Chargement de votre historique...</div>
+
+  <!-- Erreur -->
+  <div *ngIf="errorMessage" class="error">❌ {{ errorMessage }}</div>
+
+  <!-- Emprunts en cours -->
+  <div *ngIf="!loading && !errorMessage && activeTab === 'current'">
+    <div *ngIf="currentLoans.length === 0" class="no-data">
+      📭 Vous n'avez aucun emprunt en cours.
+    </div>
+    
+    <div *ngFor="let loan of currentLoans" class="loan-card" [class.retard]="loan.statut === 'EN_RETARD'">
+      <div class="loan-header">
+        <h3>{{ loan.livreTitre }}</h3>
+        <span class="statut" [class.retard-statut]="loan.statut === 'EN_RETARD'">
+          {{ loan.statut === 'EN_COURS' ? '✓ En cours' : '⚠️ En retard' }}
+        </span>
+      </div>
+      <p><strong>Auteur :</strong> {{ loan.livreAuteur }}</p>
+      <p><strong>Date d'emprunt :</strong> {{ loan.dateEmprunt | date:'dd/MM/yyyy' }}</p>
+      <p><strong>Date de retour prévue :</strong> {{ loan.dateRetourPrevue | date:'dd/MM/yyyy' }}</p>
+      <div *ngIf="loan.penalite > 0" class="penalite">
+        💰 Pénalité : {{ loan.penalite }} FCFA
+      </div>
+    </div>
+  </div>
+
+  <!-- Historique passé -->
+  <div *ngIf="!loading && !errorMessage && activeTab === 'past'">
+    <div *ngIf="pastLoans.length === 0" class="no-data">
+      📭 Aucun historique d'emprunt trouvé.
+    </div>
+    
+    <div *ngFor="let loan of pastLoans" class="loan-card past">
+      <div class="loan-header">
+        <h3>{{ loan.livreTitre }}</h3>
+        <span class="statut retourne">✓ Retourné</span>
+      </div>
+      <p><strong>Auteur :</strong> {{ loan.livreAuteur }}</p>
+      <p><strong>Date d'emprunt :</strong> {{ loan.dateEmprunt | date:'dd/MM/yyyy' }}</p>
+      <p><strong>Date de retour :</strong> {{ loan.dateRetourEffective | date:'dd/MM/yyyy' }}</p>
+      <div *ngIf="loan.penalite > 0" class="penalite">
+        💰 Pénalité payée : {{ loan.penalite }} FCFA
+      </div>
+    </div>
+  </div>
+</div>

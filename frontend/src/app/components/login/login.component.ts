@@ -27,35 +27,37 @@ export class LoginComponent {
     }
 
     onSubmit(): void {
-        if (!this.loginForm.valid) return;
+    if (!this.loginForm.valid) return;
 
-        this.authService.login(this.loginForm.value).subscribe({
-            next: (res) => {
-
-                this.authService.saveToken(res.token);
-
-                alert('Connexion réussie !');
-
-                const role = this.authService.getRoleFromToken();
-                console.log("ROLE =", role);
-
-                // 🎯 ADAPTÉ À TA BASE DE DONNÉES
-                if (role === 'ADMIN') {
-                    this.router.navigate(['/admin']);
-
-                } else if (role === 'BIBLIOTHECAIRE') {
-                    this.router.navigate(['/bibliothecaire']);
-
-                } else if (role === 'MEMBRE') {
-                    this.router.navigate(['/member']);
-
-                } else {
-                    alert("Rôle inconnu ou token invalide");
-                }
-            },
-            error: () => {
-                alert('Email ou mot de passe incorrect');
+    this.authService.login(this.loginForm.value).subscribe({
+        next: (res) => {
+            this.authService.saveToken(res.token);
+            
+            // LOGS POUR DEBUG
+            console.log("Réponse complète:", res);
+            console.log("Role reçu:", res.role);
+            console.log("Token reçu:", res.token);
+            
+            const role = res.role;
+            
+            if (role === 'ADMIN') {
+                console.log("Redirection vers /admin");
+                this.router.navigate(['/admin']);
+            } else if (role === 'BIBLIOTHECAIRE') {
+                console.log("Redirection vers /bibliothecaire");
+                this.router.navigate(['/bibliothecaire']);
+            } else if (role === 'MEMBRE') {
+                console.log("Redirection vers /membre");
+                this.router.navigate(['/membre']);
+            } else {
+                console.log("Rôle non reconnu:", role);
+                alert("Rôle inconnu: " + role);
             }
-        });
-    }
+        },
+        error: () => {
+            alert('Email ou mot de passe incorrect');
+        }
+    });
+
+}
 }
