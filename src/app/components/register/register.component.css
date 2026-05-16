@@ -1,0 +1,70 @@
+/* Style du formulaire */
+form {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Champs de saisie */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #1976D2;
+    box-shadow: 0 0 5px rgba(25,118,210,0.3);
+}
+
+/* Bouton */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #1976D2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #1565C0;
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Liens */
+p {
+    text-align: center;
+    margin-top: 15px;
+}
+
+a {
+    color: #1976D2;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Titre */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}

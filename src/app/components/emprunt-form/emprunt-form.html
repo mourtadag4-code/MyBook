@@ -1,0 +1,12 @@
+<form (ngSubmit)="onSubmit()">
+  <label>Livre :</label>
+  <input [(ngModel)]="emprunt.livreId" name="livreId" required>
+
+  <label>Lecteur :</label>
+  <input [(ngModel)]="emprunt.lecteurId" name="lecteurId" required>
+
+  <label>Date retour :</label>
+  <input type="date" [(ngModel)]="emprunt.dateRetour" name="dateRetour">
+
+  <button type="submit">Enregistrer</button>
+</form>

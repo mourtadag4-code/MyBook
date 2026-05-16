@@ -1,0 +1,54 @@
+<h2>📊 Tableau de bord Administrateur</h2>
+
+<!-- 🔷 Cartes -->
+<div class="cards">
+  <div class="card">
+    <h3>📚 Livres</h3>
+    <p>{{ totalBooks }}</p>
+  </div>
+
+  <div class="card">
+    <h3>👥 Membres</h3>
+    <p>{{ totalMembers }}</p>
+  </div>
+
+  <div class="card">
+    <h3>🔄 Emprunts</h3>
+    <p>{{ currentLoans }}</p>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ Retards</h3>
+    <p>{{ overdueLoans }}</p>
+  </div>
+</div>
+
+<!-- 🔗 Liens rapides -->
+<div class="links">
+  <a routerLink="/livres">📚 Gestion des livres</a>
+  <a routerLink="/members">👥 Gestion des membres</a>
+</div>
+
+<!-- ⚠️ Tableau retards -->
+<h3>⚠️ Emprunts en retard</h3>
+
+<table>
+  <tr>
+    <th>Livre</th>
+    <th>Lecteur</th>
+    <th>Date retour</th>
+  </tr>
+
+  <tr *ngFor="let e of overdueList">
+    <td>{{ e.livreId }}</td>
+    <td>{{ e.lecteurId }}</td>
+    <td>{{ e.dateRetour }}</td>
+  </tr>
+</table>
+
+<!-- 📊 Top livres -->
+<h3>📊 Top 5 livres empruntés</h3>
+
+<div *ngFor="let b of topBooks">
+  <p>{{ b.livre }} - {{ b.count }} emprunts</p>
+</div>

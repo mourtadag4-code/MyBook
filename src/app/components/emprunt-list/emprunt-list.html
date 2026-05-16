@@ -1,0 +1,17 @@
+<table>
+  <tr>
+    <th>Livre</th>
+    <th>Lecteur</th>
+    <th>Date retour</th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let e of emprunts">
+    <td>{{ e.livreId }}</td>
+    <td>{{ e.lecteurId }}</td>
+    <td>{{ e.dateRetour }}</td>
+    <td>
+      <button (click)="retourner(e.id)">Retour</button>
+    </td>
+  </tr>
+</table>
