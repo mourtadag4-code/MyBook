@@ -1,0 +1,33 @@
+<h2>Gestion des membres</h2>
+
+<a routerLink="/admin/membres/ajouter" class="btn-add">➕ Ajouter un membre</a>
+
+<table border="1" style="width:100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let member of members">
+            <td>{{ member.id }}</td>
+            <td>{{ member.nom }}</td>
+            <td>{{ member.prenom }}</td>
+            <td>{{ member.email }}</td>
+            <td>{{ member.telephone }}</td>
+            <td>
+                <a [routerLink]="['/admin/membres/modifier', member.id]">✏️ Modifier</a>
+                <button (click)="deleteMember(member.id!)">🗑️ Supprimer</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<ng-template #loadingTemplate>
+    <p>Chargement des membres...</p>
+</ng-template>

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 // Classe qui représente la table utilisateur en base de données
 
 @Entity
@@ -38,5 +39,6 @@ public class Utilisateur {
     private String niveauAcces;
 
     @OneToMany(mappedBy = "membre", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Emprunt> emprunts;
 }

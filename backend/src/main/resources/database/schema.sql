@@ -52,7 +52,7 @@ CREATE INDEX idx_utilisateur_email ON utilisateur(email);
 -- Admin
 INSERT INTO utilisateur (nom, prenom, email, telephone, password, role, date_inscription, niveau_acces)
 VALUES ('Diop', 'Aliou', 'admin@bibliotheque.sn', '771234567', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTV6UiW', 'ADMIN', CURDATE(), 'TOUT');
-
+INSERT INTO utilisateur (nom, prenom, email, password, role, date_inscription) VALUES ('Admin', 'Super', 'admin@test.com', 'admin123', 'ADMIN', CURDATE());
 -- Bibliothécaire
 INSERT INTO utilisateur (nom, prenom, email, telephone, password, role, date_inscription, matricule, date_embauche)
 VALUES ('Sow', 'Fatou', 'biblio@bibliotheque.sn', '772345678', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTV6UiW', 'BIBLIOTHECAIRE', CURDATE(), 'BIB-001', CURDATE());

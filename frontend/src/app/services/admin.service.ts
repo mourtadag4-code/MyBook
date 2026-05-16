@@ -2,32 +2,41 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Statistiques {
-  totalLivres: number;
-  totalMembres: number;
-  empruntsEnCours: number;
-  empruntsEnRetard: number;
-  livresPlusEmpruntes: LivreStat[];
+export interface Member {
+    id?: number;
+    nom: string;
+    prenom: string;
+    email: string;
+    telephone?: string;
+    dateNaissance?: string;
+    adresse?: string;
+    password?: string;
+    role?: string;
 }
 
-export interface LivreStat {
-  id: number;
-  titre: string;
-  auteur: string;
-  nbEmprunts: number;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AdminService {
+    private apiUrl = 'http://localhost:8080/api/utilisateurs';
 
-  private apiUrl = 'http://localhost:8080/api/statistiques';
+    constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+    getAllMembers(): Observable<Member[]> {
+        return this.http.get<Member[]>(`${this.apiUrl}/membres`);
+    }
 
-  // Récupérer toutes les statistiques en une seule requête
-  getToutesLesStatistiques(): Observable<Statistiques> {
-    return this.http.get<Statistiques>(`${this.apiUrl}/toutes`);
-  }
+    getMemberById(id: number): Observable<Member> {
+        return this.http.get<Member>(`${this.apiUrl}/${id}`);
+    }
+
+    createMember(member: Member): Observable<Member> {
+        return this.http.post<Member>(`${this.apiUrl}/membres`, member);
+    }
+
+    updateMember(id: number, member: Member): Observable<Member> {
+        return this.http.put<Member>(`${this.apiUrl}/membres/${id}`, member);
+    }
+
+    deleteMember(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    }
 }

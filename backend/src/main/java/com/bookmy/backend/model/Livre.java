@@ -3,7 +3,7 @@ package com.bookmy.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
-// Classe qui représente la table livre  en base de données
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "livre")
@@ -29,5 +29,6 @@ public class Livre {
     private int nbExemplairesDisponibles;
 
     @OneToMany(mappedBy = "livre", fetch = FetchType.LAZY)
+    @JsonIgnore  // ← AJOUTE CETTE LIGNE
     private List<Emprunt> emprunts;
 }

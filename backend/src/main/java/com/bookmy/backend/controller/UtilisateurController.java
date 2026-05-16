@@ -4,6 +4,7 @@ import com.bookmy.backend.model.Utilisateur;
 import com.bookmy.backend.service.UtilisateurService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class UtilisateurController {
     }
 
     @GetMapping("/membres")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Utilisateur> getAllMembres() {
         return utilisateurService.trouverMembres();
     }
@@ -44,30 +46,35 @@ public class UtilisateurController {
     }
 
     @PostMapping("/membres")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Utilisateur> createMembre(@RequestBody Utilisateur utilisateur) {
         Utilisateur nouveauMembre = utilisateurService.creerMembre(utilisateur);
         return new ResponseEntity<>(nouveauMembre, HttpStatus.CREATED);
     }
 
     @PostMapping("/bibliothecaires")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Utilisateur> createBibliothecaire(@RequestBody Utilisateur utilisateur) {
         Utilisateur nouveauBibliothecaire = utilisateurService.creerBibliothecaire(utilisateur);
         return new ResponseEntity<>(nouveauBibliothecaire, HttpStatus.CREATED);
     }
 
     @PostMapping("/admins")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Utilisateur> createAdmin(@RequestBody Utilisateur utilisateur) {
         Utilisateur nouvelAdmin = utilisateurService.creerAdmin(utilisateur);
         return new ResponseEntity<>(nouvelAdmin, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUtilisateur(@PathVariable Long id) {
         utilisateurService.supprimerUtilisateur(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/membres/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Utilisateur> modifierMembre(@PathVariable Long id, @RequestBody Utilisateur membre) {
         try {
             Utilisateur membreModifie = utilisateurService.modifierMembre(id, membre);
