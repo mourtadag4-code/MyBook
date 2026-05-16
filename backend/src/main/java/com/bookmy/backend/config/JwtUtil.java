@@ -47,9 +47,14 @@ public class JwtUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", userDetails.getAuthorities());
-        return createToken(claims, userDetails.getUsername());
+    Map<String, Object> claims = new HashMap<>();
+    // Extraire le rôle depuis les authorities
+    String role = userDetails.getAuthorities().stream()
+        .findFirst()
+        .map(auth -> auth.getAuthority().replace("ROLE_", ""))
+        .orElse("MEMBRE");
+    claims.put("role", role);
+    return createToken(claims, userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -66,4 +71,5 @@ public class JwtUtil {
         final String email = extractEmail(token);
         return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+    
 }

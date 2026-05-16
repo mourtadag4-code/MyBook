@@ -1,0 +1,42 @@
+<div class="search-container">
+  <h1>🔍 Recherche de livres</h1>
+
+  <!-- Barre de recherche -->
+  <div class="search-bar">
+    <input type="text" 
+           [(ngModel)]="searchKeyword" 
+           placeholder="Rechercher par titre, auteur ou ISBN..."
+           (keyup.enter)="searchBooks()">
+    
+    <select [(ngModel)]="selectedCategory">
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+    
+    <button class="btn-search" (click)="searchBooks()">Rechercher</button>
+    <button class="btn-clear" (click)="clearSearch()">Effacer</button>
+  </div>
+
+  <!-- Résultats -->
+  <div *ngIf="loading" class="loading">⏳ Chargement...</div>
+  <div *ngIf="errorMessage" class="error">❌ {{ errorMessage }}</div>
+
+  <div *ngIf="!loading && !errorMessage">
+    <div class="results-count">{{ livres.length }} livre(s) trouvé(s)</div>
+    
+    <div class="books-grid">
+      <div *ngFor="let livre of livres" class="book-card">
+        <h3>{{ livre.titre }}</h3>
+        <p><strong>Auteur :</strong> {{ livre.auteur }}</p>
+        <p><strong>Catégorie :</strong> {{ livre.categorie || 'Non spécifiée' }}</p>
+        <p><strong>ISBN :</strong> {{ livre.isbn }}</p>
+        <p class="disponibilite" [class.disponible]="livre.nbExemplairesDisponibles > 0" [class.indisponible]="livre.nbExemplairesDisponibles === 0">
+          📚 {{ livre.nbExemplairesDisponibles }} / {{ livre.nbExemplairesTotal }} disponibles
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="livres.length === 0" class="no-results">
+      Aucun livre trouvé.
+    </div>
+  </div>
+</div>

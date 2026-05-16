@@ -1,0 +1,26 @@
+<div class="return-container">
+  <h1>🔄 Enregistrer un retour</h1>
+
+  <div *ngIf="message" class="success">
+    ✅ {{ message }}
+  </div>
+
+  <div *ngIf="errorMessage" class="error">
+    ❌ {{ errorMessage }}
+  </div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>ID de l'emprunt :</label>
+      <input type="number" [(ngModel)]="loanId" name="loanId" placeholder="Saisir l'ID de l'emprunt" required>
+    </div>
+
+    <button type="submit" class="btn-submit" [disabled]="isLoading">
+      {{ isLoading ? '⏳ Enregistrement...' : '✅ Enregistrer le retour' }}
+    </button>
+  </form>
+
+  <div class="info">
+    <p>📌 <strong>Note :</strong> Si le livre est rendu en retard, une pénalité sera automatiquement calculée.</p>
+  </div>
+</div>

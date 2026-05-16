@@ -28,6 +28,9 @@ export class AdminService {
         return this.http.get<Member>(`${this.apiUrl}/${id}`);
     }
 
+    getToutesLesStatistiques(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/toutes`);
+}
     createMember(member: Member): Observable<Member> {
         return this.http.post<Member>(`${this.apiUrl}/membres`, member);
     }
@@ -39,4 +42,16 @@ export class AdminService {
     deleteMember(id: number): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
+    // Statistiques avancées
+getEmpruntsParMois(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/statistiques/emprunts-par-mois`);
+}
+
+getTopCategories(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/statistiques/top-categories`);
+}
+
+getMembresActifs(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/statistiques/membres-actifs`);
+}
 }
