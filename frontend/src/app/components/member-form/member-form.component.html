@@ -1,0 +1,16 @@
+<h2>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un membre</h2>
+
+<form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+    <input formControlName="nom" placeholder="Nom" required>
+    <input formControlName="prenom" placeholder="Prénom" required>
+    <input formControlName="email" type="email" placeholder="Email" required>
+    <input formControlName="telephone" placeholder="Téléphone">
+    <input formControlName="dateNaissance" type="date" placeholder="Date de naissance">
+    <input formControlName="adresse" placeholder="Adresse">
+    <input formControlName="password" type="password" placeholder="Mot de passe" [required]="!isEditMode">
+
+    <button type="submit" [disabled]="memberForm.invalid">
+        {{ isEditMode ? 'Modifier' : 'Ajouter' }}
+    </button>
+    <a routerLink="/admin/membres" class="btn-cancel">Annuler</a>
+</form>

@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-// Classe qui représente la table emprunt en base de données
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "emprunt")
@@ -19,14 +18,14 @@ public class Emprunt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Plusieurs emprunts → 1 utilisateur
-    @ManyToOne(fetch = FetchType.LAZY)  // Plusieurs emprunts → 1 utilisateur (chargé à la demande)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "membre_id", nullable = false)
+    @JsonIgnore  // ← AJOUTE CETTE LIGNE
     private Utilisateur membre;
 
-    // Plusieurs emprunts → 1 livre
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "livre_id", nullable = false)
+    @JsonIgnore  // ← AJOUTE CETTE LIGNE
     private Livre livre;
 
     private LocalDate dateEmprunt;
