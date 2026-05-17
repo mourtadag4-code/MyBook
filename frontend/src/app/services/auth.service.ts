@@ -28,13 +28,29 @@ export class AuthService {
         return !!this.getToken();
     }
 
-    // NOUVELLE MÉTHODE - Récupère le rôle depuis le token JWT
     getRoleFromToken(): string | null {
         const token = this.getToken();
         if (!token) return null;
         try {
             const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload.role;
+            const role = payload.role;
+            if (role && role.startsWith('ROLE_')) {
+                return role.substring(5);
+            }
+            return role;
+        } catch {
+            return null;
+        }
+    }
+
+    getUserId(): number | null {
+        const token = this.getToken();
+        if (!token) return null;
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            console.log('🔍 PAYLOAD:', payload);
+            console.log('🔍 ID trouvé:', payload.id);
+            return payload.id;
         } catch {
             return null;
         }

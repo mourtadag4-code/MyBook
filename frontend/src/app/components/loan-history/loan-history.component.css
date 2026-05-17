@@ -1,0 +1,113 @@
+.history-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+/* Onglets */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #ddd;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.tab-btn.active {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  margin-bottom: -2px;
+}
+
+/* Cartes */
+.loan-card {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.loan-card:hover {
+  transform: translateY(-2px);
+}
+
+.loan-card.retard {
+  border-left: 5px solid #dc3545;
+  background: #fff5f5;
+}
+
+.loan-card.past {
+  opacity: 0.9;
+}
+
+.loan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.loan-header h3 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.statut {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  background: #28a745;
+  color: white;
+}
+
+.statut.retard-statut {
+  background: #dc3545;
+}
+
+.statut.retourne {
+  background: #6c757d;
+}
+
+.penalite {
+  margin-top: 10px;
+  padding: 8px;
+  background: #ffeaa7;
+  border-radius: 5px;
+  color: #e67e22;
+  font-weight: bold;
+}
+
+.penalite-positive {
+  color: #e67e22;
+}
+
+.loading, .error, .no-data {
+  text-align: center;
+  padding: 40px;
+}
+
+.error {
+  color: red;
+}
+
+.no-data {
+  color: #666;
+}

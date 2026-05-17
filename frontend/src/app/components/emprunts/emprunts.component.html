@@ -1,0 +1,53 @@
+<div class="emprunts-container">
+    <h1>📖 Gestion des emprunts</h1>
+
+    <div *ngIf="loading" class="loading">⏳ Chargement...</div>
+
+    <!-- Cartes statistiques -->
+    <div class="stats-cards" *ngIf="!loading">
+        <div class="card">
+            <h3>📚 Emprunts en cours</h3>
+            <p class="number">{{ empruntsEnCours.length }}</p>
+        </div>
+        <div class="card">
+            <h3>⚠️ Emprunts en retard</h3>
+            <p class="number">{{ empruntsEnRetard.length }}</p>
+        </div>
+    </div>
+
+    <!-- Affichage des emprunts en cours -->
+    <div class="table-container" *ngIf="!loading">
+        <h2>📋 Liste des emprunts en cours</h2>
+        
+        <div *ngIf="empruntsEnCours.length === 0" class="no-data">
+            📭 Aucun emprunt en cours
+        </div>
+        
+        <table *ngIf="empruntsEnCours.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Membre</th>
+                    <th>Livre</th>
+                    <th>Date emprunt</th>
+                    <th>Retour prévu</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let e of empruntsEnCours">
+                    <td>{{ e.id }}</td>
+                    <td>{{ e.membre?.nom }} {{ e.membre?.prenom }}</td>
+                    <td>{{ e.livre?.titre }}</td>
+                    <td>{{ e.dateEmprunt | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ e.dateRetourPrevue | date:'dd/MM/yyyy' }}</td>
+                    <td>
+                        <span class="statut" [class.retard]="e.statut === 'EN_RETARD'">
+                            {{ e.statut === 'EN_COURS' ? '✓ En cours' : '⚠️ En retard' }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

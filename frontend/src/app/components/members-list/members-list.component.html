@@ -1,33 +1,84 @@
-<h2>Gestion des membres</h2>
+<div class="members-container">
+    <h1>📋 Gestion des membres</h1>
 
-<a routerLink="/admin/membres/ajouter" class="btn-add">➕ Ajouter un membre</a>
+    <div *ngIf="loading" class="loading">⏳ Chargement...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-<table border="1" style="width:100%; border-collapse: collapse;">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Téléphone</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let member of members">
-            <td>{{ member.id }}</td>
-            <td>{{ member.nom }}</td>
-            <td>{{ member.prenom }}</td>
-            <td>{{ member.email }}</td>
-            <td>{{ member.telephone }}</td>
-            <td>
-                <a [routerLink]="['/admin/membres/modifier', member.id]">✏️ Modifier</a>
-                <button (click)="deleteMember(member.id!)">🗑️ Supprimer</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <div *ngIf="!loading" class="table-container">
+        <div class="actions">
+            <button class="btn-add" routerLink="/admin/utilisateurs/ajouter">➕ Ajouter un membre</button>
+        </div>
 
-<ng-template #loadingTemplate>
-    <p>Chargement des membres...</p>
-</ng-template>
+        <div *ngIf="members.length === 0" class="no-data">
+            📭 Aucun membre trouvé
+        </div>
+
+        <table *ngIf="members.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let member of members">
+                    <td>{{ member.id }}</td>
+                    <td>{{ member.nom }}</td>
+                    <td>{{ member.prenom }}</td>
+                    <td>{{ member.email }}</td>
+                    <td>{{ member.telephone || '-' }}</td>
+                    <td class="actions-cell">
+                        <button class="btn-edit" (click)="modifierMember(member)">✏️ Modifier</button>
+                        <button class="btn-delete" (click)="deleteMember(member.id!)">🗑️ Supprimer</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de modification -->
+    <div class="modal" *ngIf="showEditModal">
+        <div class="modal-content edit-modal">
+            <h3>✏️ Modifier le membre</h3>
+            
+            <div class="form-group">
+                <label>Nom :</label>
+                <input type="text" [(ngModel)]="memberEnModification.nom" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label>Prénom :</label>
+                <input type="text" [(ngModel)]="memberEnModification.prenom" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label>Email :</label>
+                <input type="email" [(ngModel)]="memberEnModification.email" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label>Téléphone :</label>
+                <input type="text" [(ngModel)]="memberEnModification.telephone" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label>Adresse :</label>
+                <input type="text" [(ngModel)]="memberEnModification.adresse" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label>Date de naissance :</label>
+                <input type="date" [(ngModel)]="memberEnModification.dateNaissance" class="form-control">
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-save" (click)="enregistrerModification()">💾 Enregistrer</button>
+                <button class="btn-cancel" (click)="closeEditModal()">❌ Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>

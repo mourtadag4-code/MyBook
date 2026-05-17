@@ -1,1 +1,65 @@
-<router-outlet></router-outlet>
+<div class="app-container">
+    <!-- Header -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a routerLink="/">📚 MyBook</a>
+        </div>
+        <div class="nav-links">
+            <!-- ADMIN -->
+             <!-- ADMIN -->
+
+            <ng-container *ngIf="hasRole('ADMIN')">
+                <a routerLink="/livres">📚 Livres</a>
+                <a routerLink="/admin/utilisateurs">👥 Membres</a>
+                <a routerLink="/admin/emprunts">📖 Emprunts</a>
+                <a routerLink="/admin">📊 Dashboard</a>
+
+            </ng-container>
+
+            <!-- BIBLIOTHECAIRE -->
+            <ng-container *ngIf="hasRole('BIBLIOTHECAIRE')">
+                <a routerLink="/livres">📚 Livres</a>
+                <a routerLink="/emprunt">📖 Emprunter</a>
+                <a routerLink="/retour">🔄 Retourner</a>
+            </ng-container>
+
+            <!-- MEMBRE -->
+            <ng-container *ngIf="hasRole('MEMBRE')">
+                <a routerLink="/livres">📚 Livres</a>
+                <a routerLink="/membre">📖 Mes emprunts</a>
+                <a routerLink="/profil">👤 Mon profil</a>
+            </ng-container>
+
+            <button (click)="logout()" class="btn-logout">🔓 Déconnexion</button>
+            <span *ngIf="userName" class="user-name">👋 {{ userName }}</span>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main>
+        <router-outlet></router-outlet>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>📚 MyBook</h3>
+                <p>Votre bibliothèque en ligne</p>
+            </div>
+            <div class="footer-section">
+                <h4>Liens utiles</h4>
+                <a routerLink="/livres">Livres</a>
+                <a routerLink="/contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📧 contact@mybook.com</p>
+                <p>📞 +221 77 123 45 67</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MyBook - Tous droits réservés</p>
+        </div>
+    </footer>
+</div>

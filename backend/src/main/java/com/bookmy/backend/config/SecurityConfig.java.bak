@@ -45,7 +45,9 @@ public class SecurityConfig {
 
             // 🔐 Règles de sécurité
             .authorizeHttpRequests(auth -> auth
-
+                .requestMatchers("/api/auth/login").permitAll()  // ← Spécifique
+    .requestMatchers("/api/auth/register").permitAll()
+    
                 // ✅ PUBLIC
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
@@ -67,28 +69,28 @@ public class SecurityConfig {
             )
 
             // 🔥 Filtre JWT
+            
             .addFilterBefore(jwtAuthenticationFilter,
                     UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // 🌍 CORS CONFIG (Angular)
+    // Ajouter cette méthode
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
-        CorsConfiguration config = new CorsConfiguration();
-
-        config.setAllowedOrigins(List.of("http://localhost:4200"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
-
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+    
 
     // 🔐 Auth manager
     @Bean
@@ -103,3 +105,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+

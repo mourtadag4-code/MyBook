@@ -1,0 +1,52 @@
+<div class="profile-container">
+    <h2>Mon profil</h2>
+
+    <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label>Nom *</label>
+            <input formControlName="nom" type="text">
+            <div *ngIf="profileForm.get('nom')?.invalid && profileForm.get('nom')?.touched" class="error-message">
+                {{ getErrorMessage('nom') }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Prénom *</label>
+            <input formControlName="prenom" type="text">
+            <div *ngIf="profileForm.get('prenom')?.invalid && profileForm.get('prenom')?.touched" class="error-message">
+                {{ getErrorMessage('prenom') }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Email *</label>
+            <input formControlName="email" type="email">
+            <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="error-message">
+                {{ getErrorMessage('email') }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Téléphone (9 chiffres)</label>
+            <input formControlName="telephone" type="tel" placeholder="771234567">
+            <div *ngIf="profileForm.get('telephone')?.invalid && profileForm.get('telephone')?.touched" class="error-message">
+                {{ getErrorMessage('telephone') }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Date de naissance</label>
+            <input formControlName="dateNaissance" type="date">
+        </div>
+
+        <div class="form-group">
+            <label>Adresse</label>
+            <textarea formControlName="adresse" rows="3"></textarea>
+        </div>
+
+        <button type="submit" [disabled]="profileForm.invalid">Enregistrer</button>
+    </form>
+</div>

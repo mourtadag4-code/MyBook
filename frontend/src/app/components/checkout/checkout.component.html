@@ -1,0 +1,31 @@
+<div class="checkout-container">
+  <h1>📖 Enregistrer un emprunt</h1>
+
+  <div *ngIf="message" class="success">
+    ✅ {{ message }}
+  </div>
+
+  <div *ngIf="errorMessage" class="error">
+    ❌ {{ errorMessage }}
+  </div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>ID du membre :</label>
+      <input type="number" [(ngModel)]="memberId" name="memberId" placeholder="Saisir l'ID du membre" required>
+    </div>
+
+    <div class="form-group">
+      <label>ISBN du livre :</label>
+      <input type="text" [(ngModel)]="bookId" name="bookId" placeholder="Saisir l'ISBN ou l'ID du livre" required>
+    </div>
+
+    <button type="submit" class="btn-submit" [disabled]="isLoading">
+      {{ isLoading ? '⏳ Enregistrement...' : '✅ Enregistrer l\'emprunt' }}
+    </button>
+  </form>
+
+  <div class="info">
+    <p>📌 <strong>Note :</strong> Vérifiez que le membre n'a pas de retards et que le livre est disponible.</p>
+  </div>
+</div>

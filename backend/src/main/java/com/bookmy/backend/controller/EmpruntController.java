@@ -5,7 +5,10 @@ import com.bookmy.backend.service.EmpruntService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/emprunts")
@@ -17,10 +20,45 @@ public class EmpruntController {
         this.empruntService = empruntService;
     }
 
-    // GET - Lister tous les emprunts en cours
+    // GET - Lister tous les emprunts en cours AVEC les détails
     @GetMapping("/en-cours")
-    public List<Emprunt> getEmpruntsEnCours() {
-        return empruntService.listerEmpruntsEnCours();
+    public List<Map<String, Object>> getEmpruntsEnCours() {
+        List<Emprunt> emprunts = empruntService.listerEmpruntsEnCours();
+        List<Map<String, Object>> result = new ArrayList<>();
+        
+        for (Emprunt e : emprunts) {
+            Map<String, Object> empruntMap = new HashMap<>();
+            empruntMap.put("id", e.getId());
+            empruntMap.put("dateEmprunt", e.getDateEmprunt());
+            empruntMap.put("dateRetourPrevue", e.getDateRetourPrevue());
+            empruntMap.put("dateRetourEffective", e.getDateRetourEffective());
+            empruntMap.put("statut", e.getStatut());
+            empruntMap.put("penalite", e.getPenalite());
+            
+            // Ajouter les infos du membre
+            if (e.getMembre() != null) {
+                Map<String, Object> membreMap = new HashMap<>();
+                membreMap.put("id", e.getMembre().getId());
+                membreMap.put("nom", e.getMembre().getNom());
+                membreMap.put("prenom", e.getMembre().getPrenom());
+                membreMap.put("email", e.getMembre().getEmail());
+                empruntMap.put("membre", membreMap);
+            }
+            
+            // Ajouter les infos du livre
+            if (e.getLivre() != null) {
+                Map<String, Object> livreMap = new HashMap<>();
+                livreMap.put("id", e.getLivre().getId());
+                livreMap.put("titre", e.getLivre().getTitre());
+                livreMap.put("auteur", e.getLivre().getAuteur());
+                livreMap.put("isbn", e.getLivre().getIsbn());
+                empruntMap.put("livre", livreMap);
+            }
+            
+            result.add(empruntMap);
+        }
+        
+        return result;
     }
 
     // GET - Lister tous les emprunts en retard

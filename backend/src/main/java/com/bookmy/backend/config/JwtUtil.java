@@ -46,10 +46,25 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    // ========== MÉTHODE MODIFIÉE POUR INCLURE L'ID ==========
+    public String generateToken(UserDetails userDetails, Long userId) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", userDetails.getAuthorities());
+        
+        // Extraire le rôle depuis les authorities
+        String role = userDetails.getAuthorities().stream()
+            .findFirst()
+            .map(auth -> auth.getAuthority().replace("ROLE_", ""))
+            .orElse("MEMBRE");
+        
+        claims.put("role", role);
+        claims.put("id", userId);  // 👈 AJOUT DE L'ID
+        
         return createToken(claims, userDetails.getUsername());
+    }
+
+    // Garder l'ancienne méthode pour compatibilité (optionnel)
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(userDetails, null);
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
