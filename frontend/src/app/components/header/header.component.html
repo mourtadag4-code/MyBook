@@ -1,0 +1,16 @@
+<header>
+    <div class="logo">
+        <a routerLink="/">📚 MyBook</a>
+    </div>
+    <nav>
+        <a routerLink="/livres">📖 Livres</a>
+        <a *ngIf="hasRole('MEMBRE')" routerLink="/membre">👤 Mes emprunts</a>
+        <a *ngIf="hasRole('BIBLIOTHECAIRE')" routerLink="/bibliothecaire">📋 Dashboard</a>
+        <a *ngIf="hasRole('ADMIN')" routerLink="/admin">⚙️ Administration</a>
+        <a *ngIf="hasRole('MEMBRE')" routerLink="/profil">👤 Mon profil</a>
+    </nav>
+    <div class="user-actions">
+        <span *ngIf="userName" class="user-name">👋 {{ userName }}</span>
+        <button (click)="logout()" class="btn-logout">🔓 Déconnexion</button>
+    </div>
+</header>

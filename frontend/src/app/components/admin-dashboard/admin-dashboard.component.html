@@ -1,45 +1,54 @@
 <div class="dashboard-container">
-  <h1>📊 Tableau de bord administrateur</h1>
+    <h1>📊 Tableau de bord administrateur</h1>
 
-  <!-- Chargement -->
-  <div *ngIf="loading" class="loading">⏳ Chargement...</div>
-  <div *ngIf="errorMessage" class="error">❌ {{ errorMessage }}</div>
+    <div *ngIf="loading" class="loading">⏳ Chargement...</div>
+    <div *ngIf="errorMessage" class="error">❌ {{ errorMessage }}</div>
 
-  <!-- Cartes statistiques -->
-  <div class="stats-cards" *ngIf="!loading">
-    <div class="card"><h3>📚 Livres</h3><p class="number">{{ stats.totalLivres }}</p></div>
-    <div class="card"><h3>👥 Membres</h3><p class="number">{{ stats.totalMembres }}</p></div>
-    <div class="card"><h3>📖 En cours</h3><p class="number">{{ stats.empruntsEnCours }}</p></div>
-    <div class="card"><h3>⚠️ Retards</h3><p class="number">{{ stats.empruntsEnRetard }}</p></div>
-  </div>
-
-  <!-- Graphiques -->
-  <div class="charts-row" *ngIf="!loading">
-    <div class="chart-card">
-      <canvas id="monthlyChart"></canvas>
+    <!-- BLOCS HORIZONTAUX -->
+    <div class="stats-cards" *ngIf="!loading">
+        <div class="card">
+            <h3>📚 Livres</h3>
+            <p class="number">{{ stats.totalLivres }}</p>
+        </div>
+        <div class="card">
+            <h3>👥 Membres</h3>
+            <p class="number">{{ stats.totalMembres }}</p>
+        </div>
+        <div class="card">
+            <h3>📖 Emprunts en cours</h3>
+            <p class="number">{{ stats.empruntsEnCours }}</p>
+        </div>
+        <div class="card">
+            <h3>⚠️ Retardés</h3>
+            <p class="number">{{ stats.empruntsEnRetard }}</p>
+        </div>
     </div>
-    <div class="chart-card">
-      <canvas id="categoryChart"></canvas>
+
+    <!-- TABLEAU TOP 5 LIVRES -->
+    <div class="top-livres" *ngIf="!loading">
+        <h2>🏆 Top 5 des livres les plus empruntés</h2>
+        
+        <div *ngIf="topLivres.length === 0" class="no-data">
+            📭 Aucune donnée d'emprunt disponible
+        </div>
+        
+        <table *ngIf="topLivres.length > 0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Emprunts</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let livre of topLivres; let i = index">
+                    <td class="rank">{{ i + 1 }}</td>
+                    <td class="titre">{{ livre.titre }}</td>
+                    <td>{{ livre.auteur }}</td>
+                    <td class="count">{{ livre.count }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-  </div>
-
-  <!-- Top livres -->
-  <div class="top-livres" *ngIf="!loading && livresTop.length > 0">
-    <h2>🏆 Top 5 livres empruntés</h2>
-    <table>
-      <thead><tr><th>Rang</th><th>Titre</th><th>Auteur</th><th>Nb emprunts</th></tr></thead>
-      <tbody>
-        <tr *ngFor="let livre of livresTop; let i = index">
-          <td><strong>{{ i+1 }}</strong></td><td>{{ livre.titre }}</td><td>{{ livre.auteur }}</td><td>{{ livre.nbEmprunts }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Menu admin -->
-  <div class="admin-menu">
-    <a routerLink="/livres" class="menu-link">📚 Gérer les livres</a>
-    <a routerLink="/membres" class="menu-link">👥 Gérer les membres</a>
-    <a routerLink="/emprunt" class="menu-link">📖 Emprunts</a>
-  </div>
 </div>

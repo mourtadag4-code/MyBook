@@ -20,7 +20,7 @@ export class AdminService {
 
     constructor(private http: HttpClient) {}
 
-    getAllMembers(): Observable<Member[]> {
+    getAllMembers(): Observable<Member[]> { 
         return this.http.get<Member[]>(`${this.apiUrl}/membres`);
     }
 

@@ -31,12 +31,12 @@
     
     <div *ngFor="let loan of currentLoans" class="loan-card" [class.retard]="loan.statut === 'EN_RETARD'">
       <div class="loan-header">
-        <h3>{{ loan.livreTitre }}</h3>
+        <h3>{{ loan.livre?.titre }}</h3>
         <span class="statut" [class.retard-statut]="loan.statut === 'EN_RETARD'">
           {{ loan.statut === 'EN_COURS' ? '✓ En cours' : '⚠️ En retard' }}
         </span>
       </div>
-      <p><strong>Auteur :</strong> {{ loan.livreAuteur }}</p>
+      <p><strong>Auteur :</strong> {{ loan.livre?.auteur }}</p>
       <p><strong>Date d'emprunt :</strong> {{ loan.dateEmprunt | date:'dd/MM/yyyy' }}</p>
       <p><strong>Date de retour prévue :</strong> {{ loan.dateRetourPrevue | date:'dd/MM/yyyy' }}</p>
       <div *ngIf="loan.penalite > 0" class="penalite">
@@ -53,10 +53,10 @@
     
     <div *ngFor="let loan of pastLoans" class="loan-card past">
       <div class="loan-header">
-        <h3>{{ loan.livreTitre }}</h3>
+        <h3>{{ loan.livre?.titre }}</h3>
         <span class="statut retourne">✓ Retourné</span>
       </div>
-      <p><strong>Auteur :</strong> {{ loan.livreAuteur }}</p>
+      <p><strong>Auteur :</strong> {{ loan.livre?.auteur }}</p>
       <p><strong>Date d'emprunt :</strong> {{ loan.dateEmprunt | date:'dd/MM/yyyy' }}</p>
       <p><strong>Date de retour :</strong> {{ loan.dateRetourEffective | date:'dd/MM/yyyy' }}</p>
       <div *ngIf="loan.penalite > 0" class="penalite">

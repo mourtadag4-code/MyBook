@@ -1,7 +1,6 @@
 package com.bookmy.backend.service;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import java.util.Collections;
+
 import com.bookmy.backend.config.JwtUtil;
 import com.bookmy.backend.model.Role;
 import com.bookmy.backend.model.Utilisateur;
@@ -60,6 +59,7 @@ public class AuthService {
                 )
             );
 
-        return jwtUtil.generateToken(userDetails);
+        // 🔥 MODIFICATION ICI : Passer l'ID de l'utilisateur
+        return jwtUtil.generateToken(userDetails, utilisateur.getId());
     }
 }

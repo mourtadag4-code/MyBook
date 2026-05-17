@@ -1,52 +1,138 @@
-<div class="books-container">
-  <div class="header">
-    <h1>📚 Gestion des livres</h1>
-    <button class="btn-add" routerLink="/livres/ajout">+ Ajouter un livre</button>
-  </div>
+<div class="livres-container">
+    <h1>
+        <span *ngIf="hasRole('ADMIN')">📚 Gestion des livres</span>
+        <span *ngIf="hasRole('BIBLIOTHECAIRE')">📚 Catalogue - Bibliothèque</span>
+        <span *ngIf="hasRole('MEMBRE')">📚 Catalogue des livres</span>
+    </h1>
 
-  <!-- Chargement -->
-  <div *ngIf="loading" class="loading">⏳ Chargement...</div>
-
-  <!-- Erreur -->
-  <div *ngIf="errorMessage" class="error">❌ {{ errorMessage }}</div>
-
-  <!-- Tableau des livres -->
-  <table *ngIf="!loading && !errorMessage && livres.length > 0">
-    <thead>
-      <tr>
-        <th>Titre</th>
-        <th>Auteur</th>
-        <th>ISBN</th>
-        <th>Catégorie</th>
-        <th>Total</th>
-        <th>Disponibles</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-    <tbody>
-      <tr *ngFor="let livre of livres">
-        <td>{{ livre.titre }}</td>
-        <td>{{ livre.auteur }}</td>
-        <td>{{ livre.isbn }}</td>
-        <td>{{ livre.categorie }}</td>
-        <td>{{ livre.nbExemplairesTotal }}</td>
-        <td [class.low-stock]="livre.nbExemplairesDisponibles === 0">
-          {{ livre.nbExemplairesDisponibles }}
-        </td>
-        <td class="actions">
-          <button class="btn-edit" [routerLink]="['/livres/modifier', livre.id]">✏️</button>
-          <button class="btn-delete" (click)="confirmDelete(livre)">🗑️</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Modal confirmation suppression -->
-  <div *ngIf="livreASupprimer" class="modal">
-    <div class="modal-content">
-      <p>Supprimer "{{ livreASupprimer.titre }}" ?</p>
-      <button class="btn-confirm" (click)="deleteLivre()">Oui</button>
-      <button class="btn-cancel" (click)="cancelDelete()">Non</button>
+    <!-- Barre de recherche (pour MEMBRE et BIBLIOTHECAIRE) -->
+    <div *ngIf="!hasRole('ADMIN')" class="search-bar">
+        <input type="text" 
+               [(ngModel)]="searchTerm" 
+               (input)="filterLivres()"
+               placeholder="🔍 Rechercher un livre par titre, auteur ou catégorie..."
+               class="search-input">
     </div>
-  </div>
+
+    <div *ngIf="loading" class="loading">⏳ Chargement...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <div *ngIf="!loading" class="table-container">
+        <!-- Bouton Ajouter : seulement pour ADMIN -->
+        <div class="actions" *ngIf="hasRole('ADMIN')">
+            <button class="btn-add" routerLink="/livres/ajout">+ Ajouter un livre</button>
+        </div>
+
+        <div *ngIf="filteredLivres.length === 0" class="no-data">
+            📭 Aucun livre trouvé
+        </div>
+
+        <table *ngIf="filteredLivres.length > 0">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th *ngIf="hasRole('ADMIN')">ISBN</th>
+                    <th>Catégorie</th>
+                    <th *ngIf="hasRole('ADMIN')">Exemplaires</th>
+                    <th>Disponibles</th>
+                    <th>Actes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let livre of filteredLivres">
+                    <td class="titre-cell">{{ livre.titre }}</td>
+                    <td>{{ livre.auteur }}</td>
+                    <td *ngIf="hasRole('ADMIN')">{{ livre.isbn }}</td>
+                    <td><span class="categorie-badge">{{ livre.categorie }}</span></td>
+                    <td *ngIf="hasRole('ADMIN')" class="text-center">{{ livre.nbExemplairesTotal }}</td>
+                    <td class="text-center">
+                        <span class="badge" [class.badge-success]="livre.nbExemplairesDisponibles > 0"
+                                          [class.badge-danger]="livre.nbExemplairesDisponibles === 0">
+                            {{ livre.nbExemplairesDisponibles }}
+                        </span>
+                    </td>
+                    <td class="actions-cell">
+                        <!-- ADMIN : Modifier et Supprimer -->
+                        <button *ngIf="hasRole('ADMIN')" class="btn-edit" (click)="modifierLivre(livre)">
+                            ✏️ Modifier
+                        </button>
+                        <button *ngIf="hasRole('ADMIN')" class="btn-delete" (click)="confirmDelete(livre)">
+                            🗑️ Supprimer
+                        </button>
+                        
+                        <!-- BIBLIOTHECAIRE et MEMBRE : Emprunter si disponible -->
+                        <button *ngIf="(hasRole('BIBLIOTHECAIRE') || hasRole('MEMBRE')) && livre.nbExemplairesDisponibles > 0" 
+                                class="btn-borrow" 
+                                (click)="emprunterLivre(livre.id!)">
+                            📖 Emprunter
+                        </button>
+                        
+                        <!-- Message si indisponible -->
+                        <span *ngIf="(hasRole('BIBLIOTHECAIRE') || hasRole('MEMBRE')) && livre.nbExemplairesDisponibles === 0" 
+                              class="unavailable">
+                            ❌ Indisponible
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de confirmation suppression (ADMIN seulement) -->
+    <div class="modal" *ngIf="livreASupprimer">
+        <div class="modal-content">
+            <h3>⚠️ Confirmer la suppression</h3>
+            <p>Voulez-vous vraiment supprimer le livre <strong>"{{ livreASupprimer.titre }}"</strong> ?</p>
+            <p class="warning-text">Cette action est irréversible !</p>
+            <div class="modal-actions">
+                <button class="btn-confirm" (click)="deleteLivre()">Oui, supprimer</button>
+                <button class="btn-cancel" (click)="cancelDelete()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de modification (ADMIN seulement) -->
+    <div class="modal" *ngIf="showEditModal">
+        <div class="modal-content edit-modal">
+            <h3>✏️ Modifier le livre</h3>
+            
+            <div class="form-group">
+                <label>Titre :</label>
+                <input type="text" [(ngModel)]="livreEnModification.titre" class="form-control" placeholder="Titre du livre">
+            </div>
+            
+            <div class="form-group">
+                <label>Auteur :</label>
+                <input type="text" [(ngModel)]="livreEnModification.auteur" class="form-control" placeholder="Nom de l'auteur">
+            </div>
+            
+            <div class="form-group">
+                <label>ISBN :</label>
+                <input type="text" [(ngModel)]="livreEnModification.isbn" class="form-control" placeholder="978-2-1234-5680">
+            </div>
+            
+            <div class="form-group">
+                <label>Catégorie :</label>
+                <input type="text" [(ngModel)]="livreEnModification.categorie" class="form-control" placeholder="Roman, Science, Histoire...">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group half">
+                    <label>Nombre d'exemplaires :</label>
+                    <input type="number" [(ngModel)]="livreEnModification.nbExemplairesTotal" class="form-control" min="0">
+                </div>
+                
+                <div class="form-group half">
+                    <label>Exemplaires disponibles :</label>
+                    <input type="number" [(ngModel)]="livreEnModification.nbExemplairesDisponibles" class="form-control" min="0">
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-save" (click)="enregistrerModification()">💾 Enregistrer</button>
+                <button class="btn-cancel" (click)="closeEditModal()">❌ Annuler</button>
+            </div>
+        </div>
+    </div>
 </div>
