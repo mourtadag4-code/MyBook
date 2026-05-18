@@ -14,11 +14,20 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { MembersListComponent } from './components/members-list/members-list.component';
 import { MemberFormComponent } from './components/member-form/member-form.component';
 import { EmpruntsComponent } from './components/emprunts/emprunts.component';
+import { VisitorComponent } from './components/visitor/visitor.component';
 
 export const routes: Routes = [
+    // Page publique
+    { path: '', component: VisitorComponent },
+
+    // Authentification
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+
+    // Recherche (accessible à tous les connectés)
     { path: 'recherche', component: BookSearchComponent },
+
+    // Historique membre
     { path: 'historique', component: LoanHistoryComponent, canActivate: [RoleGuard], data: { roles: ['MEMBRE'] } },
 
     // Routes ADMIN
@@ -42,7 +51,6 @@ export const routes: Routes = [
     { path: 'membre', component: LoanHistoryComponent, canActivate: [RoleGuard], data: { roles: ['MEMBRE'] } },
     { path: 'profil', component: ProfileComponent, canActivate: [RoleGuard], data: { roles: ['MEMBRE'] } },
 
-    // Redirections
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: '**', redirectTo: '/login' }
+    // Redirection 404
+    { path: '**', redirectTo: '' }
 ];

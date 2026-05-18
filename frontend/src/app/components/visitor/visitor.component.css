@@ -1,0 +1,79 @@
+.visitor-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.hero {
+  text-align: center;
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+  color: white;
+  padding: 60px 20px;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+}
+
+.hero a {
+  color: #ffc107;
+  text-decoration: none;
+}
+
+.hero a:hover {
+  text-decoration: underline;
+}
+
+.catalog h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-card h3 {
+  margin: 0 0 10px 0;
+  color: #2c3e50;
+}
+
+.disponibilite {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.disponible {
+  color: #28a745;
+}
+
+.indisponible {
+  color: #dc3545;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+}
+
+.error {
+  color: red;
+}

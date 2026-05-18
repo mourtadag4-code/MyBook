@@ -1,0 +1,24 @@
+<div class="visitor-container">
+  <div class="hero">
+    <h1>📚 Bienvenue à la Bibliothèque</h1>
+    <p>Découvrez notre catalogue de livres. Pour emprunter, veuillez vous <a routerLink="/login">connecter</a> ou vous <a routerLink="/register">inscrire</a>.</p>
+  </div>
+
+  <div class="catalog">
+    <h2>📖 Notre catalogue</h2>
+
+    <div *ngIf="loading" class="loading">⏳ Chargement...</div>
+    <div *ngIf="errorMessage" class="error">❌ {{ errorMessage }}</div>
+
+    <div class="books-grid" *ngIf="!loading && !errorMessage">
+      <div *ngFor="let livre of livres" class="book-card">
+        <h3>{{ livre.titre }}</h3>
+        <p><strong>Auteur :</strong> {{ livre.auteur }}</p>
+        <p><strong>Catégorie :</strong> {{ livre.categorie || 'Non spécifiée' }}</p>
+        <p class="disponibilite" [class.disponible]="livre.nbExemplairesDisponibles > 0" [class.indisponible]="livre.nbExemplairesDisponibles === 0">
+          📚 {{ livre.nbExemplairesDisponibles }} / {{ livre.nbExemplairesTotal }} disponibles
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
